@@ -6,7 +6,7 @@ management.endpoint.health.show-details: always
 
 resilience4j.circuitbreaker:
   instances:
-    cBPaymentService:
+    circuitBreakerService:
       registerHealthIndicator: true
       slidingWindowSize: 10
       minimumNumberOfCalls: 3
@@ -24,6 +24,14 @@ resilience4j.circuitbreaker:
 
 resilience4j.retry:
   instances:
-    retryPaymentDetailsService:
+    retryService:
       maxRetryAttempts: 5
       waitDuration: 10000
+
+resilience4j.ratelimiter:
+  instances:
+    rateLimiterService:
+      limitForPeriod: 3
+      limitRefreshPeriod: 60s
+      timeoutDuration: 1s
+      registerHealthIndicator: true

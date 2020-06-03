@@ -42,9 +42,10 @@ public class BookingServiceImpl implements BookingService {
 	}
 
 	@Override
-	public Map<Seat,BookingDetail> bookingInitialization(Long screenId, Long seatId) throws BookMyShowException {
+	public BookingStatus bookingInitialization(Long screenId, Long seatId) throws BookMyShowException {
 		Map<Seat,BookingDetail> seat = theatreService.getSeat(screenId,seatId);
 		BookingDetail bookingDetail = null;
+		BookingStatus bookingStatus = null;
 		for(Map.Entry entry:seat.entrySet()){
 			bookingDetail = (BookingDetail) entry.getValue();
 			break;
@@ -55,8 +56,9 @@ public class BookingServiceImpl implements BookingService {
 		else{
 			bookingDetail.setBookingStatus(BookingStatus.LOCKED);
 			bookingDetail.setBookedBy("gibran");
+			bookingStatus = bookingDetail.getBookingStatus();
 		}
-		return seat;
+		return bookingStatus;
 	}
 
 

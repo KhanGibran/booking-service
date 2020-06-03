@@ -15,7 +15,7 @@ public interface BookingService {
 
 	Map<Seat, BookingDetail> getAvailableSeats(Long screenId) throws BookMyShowException;
 
-	Map<Seat,BookingDetail> bookingInitialization(Long screenId, Long seatId) throws BookMyShowException;
+	BookingStatus bookingInitialization(Long screenId, Long seatId) throws BookMyShowException;
 
 	String bookSeats(Long screenId, String userName) throws BookMyShowException;
 

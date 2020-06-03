@@ -16,23 +16,23 @@ public class PaymentServiceImpl implements PaymentService {
 	private RestTemplate restTemplate;
 
 	@Override
-	@CircuitBreaker(name = "cBPaymentService")
+	@CircuitBreaker(name = "circuitBreakerService",fallbackMethod = "circuitBreakerFallBackMethod")
 	public String doPayment(String bookingId) {
 		return restTemplate.getForObject("/book/"+bookingId+"/pay", PaymentStatus.class).name();
 	}
 
-	public String cBFallMethodForPayment(String bookingId,Throwable t){
-		log.error("Inside fallBackMethodForPayment, cause - {}",t.toString());
+	public String circuitBreakerFallBackMethod(String bookingId,Throwable t){
+		log.error("Inside circuitBreakerFallBackMethod, cause - {}",t.toString());
 		return PaymentStatus.PAYMENT_FAILED.name();
 	}
 	@Override
-	@Retry(name = "retryPaymentDetailsService",fallbackMethod = "retryFallBackMethodForGetPaymentDetails")
+	@Retry(name = "retryService",fallbackMethod = "retryFallBackMethod")
 	public Object getAllPaymentDetails(){
 		return restTemplate.getForObject("/details",Object.class);
 	}
 
-	public Object retryFallBackMethodForGetPaymentDetails(Throwable t){
-		log.error("Inside retryFallBackMethodGetAllPaymentDetailsService, cause - {}",t.toString());
+	public Object retryFallBackMethod(Throwable t){
+		log.error("Inside retryFallBackMethod, cause - {}",t.toString());
 		return "Failed To Extract Payment Details";
 	}
 }
